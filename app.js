@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var exphbs = require('express-handlebars').engine;
 var mongoose = require('mongoose');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 // connect to db
 mongoose.connect('mongodb://127.0.0.1/checkyns').then(console.log("Connected to databse"));
