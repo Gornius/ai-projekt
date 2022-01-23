@@ -6,7 +6,9 @@ var logger = require('morgan');
 var exphbs = require('express-handlebars').engine;
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var expressSession = require('express-session');
+var connectFlash = require('connect-flash');
+var passport = require('passport');
 
 // connect to db
 mongoose.connect('mongodb://127.0.0.1/checkyns').then(console.log("Connected to databse"));
@@ -21,12 +23,38 @@ var app = express();
 app.engine('.hbs', exphbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('view engine', 'hbs');
 
+// Logger
 app.use(logger('dev'));
+
+// Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Set static dir
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Express session init
+app.use(expressSession({
+  secret: 'zaliczenie_koncowe',
+  saveUninitialized: true,
+  resave: true,
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(connectFlash());
+
+// Define global variables
+app.use((req, res, next) => {
+  app.locals.siteTitle = 'Checkyns';
+  next();
+});
+
+// Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
