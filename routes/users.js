@@ -8,7 +8,7 @@ var User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  res.send('respond with a resource');
+  res.redirect('/users/login');
 });
 
 router.get('/register', function(req, res) {
