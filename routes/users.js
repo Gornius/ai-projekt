@@ -6,6 +6,14 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
 
+// Handle flash messages
+router.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
 /* GET users listing. */
 router.get('/', function(req, res) {
   res.redirect('/users/login');
@@ -19,15 +27,17 @@ router.get('/register', function(req, res) {
 // Setup registration
 router.post('/register',
 // Validation
-body('password', 'You need to enter password').notEmpty(),
-body('email', 'You need to enter email').notEmpty(),
-body('email', 'Invalid email format').isEmail(),
+body('name', 'Field required: name').notEmpty(),
+body('username', 'Field required: username').notEmpty(),
+body('password', 'Field required: password').notEmpty(),
+body('email', 'Invalid email').isEmail(),
 // End of validation
 function(req, res) {
   var errors = validationResult(req).errors;
   console.log(errors);
   if (errors.length > 0) {
     console.log("validation errors");
+    res.render('register', {errors: errors});
   }
   else {
     console.log("no validation errors adding user to database");
@@ -40,14 +50,16 @@ function(req, res) {
     User.getUserByUserName(newUser.name, (err, user) => {
       if(err) throw err;
       if (user) {
+        req.flash('error_msg', 'User already exists');
         res.redirect('/users/register');
       }
       else {
         User.createUser(newUser, (err,user) => {
           if(err) throw err;
           console.log(user);
-          res.redirect('/users/login')
         });
+        req.flash('success_msg', 'You are now registered! You can log in now!');
+        res.redirect('/users/login')
       }
     })
   }
