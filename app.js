@@ -51,6 +51,9 @@ app.use(connectFlash());
 // Define global variables
 app.use((req, res, next) => {
   app.locals.siteTitle = 'Checkyns';
+  if (req.user) {
+    res.locals.username = req.user.name;
+  }
   next();
 });
 

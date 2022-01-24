@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="#">{{siteTitle}}</a>
@@ -29,7 +28,11 @@
         </li>
       </ul>
       <div class="d-flex">
-          Logged as: 
+          {{#if username}}
+          Logged in as: {{username}} (<a href="/users/logout">Log out</a>)
+          {{else}}
+          Not logged in&nbsp;(<a href="/users/login">Login</a>&nbsp;<a href="/users/register">Register</a>)
+          {{/if}}
       </dib>
     </div>
   </div>
