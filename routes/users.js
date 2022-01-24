@@ -16,10 +16,10 @@ router.use((req, res, next) => {
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  res.redirect('/users/login');
+  res.redirect('/');
 });
 
-router.get('/register', function(req, res) {
+router.get('/register', requireUnauthenticated, function(req, res) {
   res.render('register');
 });
 
@@ -65,14 +65,20 @@ function(req, res) {
   }
 });
 
-router.get('/login', requireAuthenticated, (req, res) => {
+router.get('/login', requireUnauthenticated, (req, res) => {
   res.render('login');
 });
 
 
 // Setup login
+function requireUnauthenticated(req, res, next) {
+  if(req.user) res.redirect('/');
+  else next();
+}
+
 function requireAuthenticated(req, res, next) {
-  return next();
+  if(!req.user) res.redirect('/users/login');
+  else next();
 };
 
 passport.use(new LocalStrategy(
