@@ -17,7 +17,47 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/list', (req, res, next) => {
-    res.render('notes/list')
+    Note.default.find((err, docs) => {
+        res.render('notes/list', { list: docs });
+    });
+});
+
+router.get('/add', (req, res, next) => {
+    res.render('notes/addOrEdit');
+});
+
+router.get('/edit/:id', (req, res, next) => {
+    Note.default.findById(req.params.id, (err, doc) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render('notes/addOrEdit', {note: doc});
+        }
+    });
+});
+
+router.post('/add', (req, res, next) => {
+    if(req.body._id == "") {
+        Note.addNote(req.body.title, req.body.content, req.user.username, (err,doc) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.redirect('list');
+            }
+        });
+    }
+    else {
+        Note.default.findByIdAndUpdate(req.body._id, req.body, (err, doc) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.redirect('list');
+            }
+        });
+    }
 });
 
 
