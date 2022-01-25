@@ -23,9 +23,9 @@ router.get('/register', requireUnauthenticated, function(req, res) {
   res.render('register');
 });
 
-
 // Setup registration
 router.post('/register',
+requireUnauthenticated,
 // Validation
 body('name', 'Field required: name').notEmpty(),
 body('username', 'Field required: username').notEmpty(),
@@ -51,7 +51,7 @@ function(req, res) {
       if(err) throw err;
       if (user) {
         req.flash('error_msg', 'User already exists');
-        res.redirect('/users/register');
+        res.redirect('/auth/register');
       }
       else {
         User.createUser(newUser, (err,user) => {
@@ -59,7 +59,7 @@ function(req, res) {
           console.log(user);
         });
         req.flash('success_msg', 'You are now registered! You can log in now!');
-        res.redirect('/users/login')
+        res.redirect('/auth/login')
       }
     })
   }
@@ -77,7 +77,7 @@ function requireUnauthenticated(req, res, next) {
 }
 
 function requireAuthenticated(req, res, next) {
-  if(!req.user) res.redirect('/users/login');
+  if(!req.user) res.redirect('/auth/login');
   else next();
 };
 
@@ -113,22 +113,22 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', requireUnauthenticated, passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/users/login',
+  failureRedirect: '/auth/login',
   failureFlash: true
 }), (req, res) => {
   res.redirect('/');
 });
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', requireAuthenticated, (req, res, next) => {
   req.logout();
   req.flash('success_msg', 'You have been logged out!');
-  res.redirect('/users/login');
+  res.redirect('/auth/login');
 });
 
 module.exports = {
-  requireAuthenticated,
+  requireUnauthenticated,
   requireAuthenticated,
   default: router,
 }

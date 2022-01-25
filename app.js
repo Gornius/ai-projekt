@@ -15,7 +15,7 @@ mongoose.connect('mongodb://127.0.0.1/checkyns').then(console.log("Connected to 
 
 // routers
 var indexRouter = require('./routes/index').default;
-var usersRouter = require('./routes/users').default;
+var authRouter = require('./routes/auth').default;
 
 var app = express();
 
@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
