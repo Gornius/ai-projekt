@@ -4,7 +4,7 @@ var { requireAuthenticated, requireUnauthenticated } = require('./auth');
 
 /* GET home page. */
 router.get('/', requireAuthenticated, function(req, res, next) {
-  res.render('index');
+  res.redirect('/notes')
 });
 
 module.exports.default = router;
