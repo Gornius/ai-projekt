@@ -1,15 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var { requireAuthenticated, requireUnauthenticated } = require('./users');
 
 /* GET home page. */
 router.get('/', requireAuthenticated, function(req, res, next) {
   res.render('index');
 });
 
-function requireAuthenticated(req, res, next) {
-  if(!req.user) res.redirect('/users/login');
-  else next();
-};
-
-
-module.exports = router;
+module.exports.default = router;

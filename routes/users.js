@@ -127,5 +127,8 @@ router.get('/logout', (req, res, next) => {
   res.redirect('/users/login');
 });
 
-
-module.exports = router;
+module.exports = {
+  requireAuthenticated,
+  requireAuthenticated,
+  default: router,
+}

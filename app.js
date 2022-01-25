@@ -14,8 +14,8 @@ var passport = require('passport');
 mongoose.connect('mongodb://127.0.0.1/checkyns').then(console.log("Connected to databse"));
 
 // routers
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/index').default;
+var usersRouter = require('./routes/users').default;
 
 var app = express();
 
