@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/list', (req, res, next) => {
-    Note.default.find((err, docs) => {
+    Note.default.find( { username: req.user.username } ,(err, docs) => {
         res.render('notes/list', { list: docs });
     });
 });
@@ -32,6 +32,9 @@ router.get('/edit/:id', (req, res, next) => {
             console.log(err);
         }
         else {
+            if (req.user.name != doc.username)
+            res.render('unauthorized');
+            else
             res.render('notes/addOrEdit', {note: doc});
         }
     });
@@ -49,12 +52,19 @@ router.post('/add', (req, res, next) => {
         });
     }
     else {
-        Note.default.findByIdAndUpdate(req.body._id, req.body, (err, doc) => {
-            if (err) {
-                console.log(err);
+        Note.default.findById(req.body._id, (err, doc) => {
+            if (req.user.username != doc.username) {
+                res.render('unauthorized');
             }
             else {
-                res.redirect('list');
+                Note.default.findByIdAndUpdate(req.body._id, req.body, (err, doc) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        res.redirect('list');
+                    }
+                });
             }
         });
     }
