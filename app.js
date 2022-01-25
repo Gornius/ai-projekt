@@ -9,6 +9,10 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var connectFlash = require('connect-flash');
 var passport = require('passport');
+var dotenv = require('dotenv');
+
+// configure dotenv
+dotenv.config();
 
 // connect to db
 mongoose.connect('mongodb://127.0.0.1/checkyns').then(console.log("Connected to databse"));
@@ -36,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Express session init
 app.use(expressSession({
-  secret: 'zaliczenie_koncowe',
+  secret: process.env.SECRET,
   saveUninitialized: true,
   resave: true,
 }));
