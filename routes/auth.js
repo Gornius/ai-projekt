@@ -51,7 +51,7 @@ function(req, res) {
       if(err) throw err;
       if (user) {
         req.flash('error_msg', 'User already exists');
-        res.redirect('/auth/register');
+        res.redirect('register');
       }
       else {
         User.createUser(newUser, (err,user) => {
@@ -59,7 +59,7 @@ function(req, res) {
           console.log(user);
         });
         req.flash('success_msg', 'You are now registered! You can log in now!');
-        res.redirect('/auth/login')
+        res.redirect('login')
       }
     })
   }
@@ -115,7 +115,7 @@ passport.deserializeUser((id, done) => {
 
 router.post('/login', requireUnauthenticated, passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/auth/login',
+  failureRedirect: 'login',
   failureFlash: true
 }), (req, res) => {
   res.redirect('/');
@@ -124,7 +124,7 @@ router.post('/login', requireUnauthenticated, passport.authenticate('local', {
 router.get('/logout', requireAuthenticated, (req, res, next) => {
   req.logout();
   req.flash('success_msg', 'You have been logged out!');
-  res.redirect('/auth/login');
+  res.redirect('login');
 });
 
 module.exports = {
