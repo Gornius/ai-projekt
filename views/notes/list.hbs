@@ -1,20 +1,14 @@
-<h3><a class="btn btn-secondary" href="/notes/add">New</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes list</h3>
+<h3><a class="btn btn-secondary"
+        href="/notes/add">New</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes list</h3>
 
- <!--{{#each list}}
- <tr>
- <td>{{this.fullName}}</td>
- <td>{{this.email}}</td>
- <td>{{this.mobile}}</td>
- <td>{{this.city}}</td>
- <td>
- <a class="btn btn-primary btn-sm"
-href="/student/{{this._id}}">Edit</a>
- <a class="btn btn-danger btn-sm"
-href="/student/delete/{{this._id}}"
- onclick="return confirm('Are you sure you want to
-delete this record ?');">Delete</a>
- {{/each}}-->
-
- {{#each list}}
- {{this.title}}--{{this.content}}--{{this.username}}--{{this.date}}
- {{/each}}
+{{#each list}}
+<div class="card my-3">
+    <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{this.date}}</h6>
+        <p class="card-text">{{this.content}}</p>
+        <a href="/notes/edit/{{this._id}}" class="card-link">Edit</a>
+        <a href="/notes/delete/{{this._id}}" class="card-link">Delete</a>
+    </div>
+</div>
+{{/each}}
