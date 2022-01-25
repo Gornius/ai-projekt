@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  res.redirect('/');
+  res.redirect('auth/login');
 });
 
 router.get('/register', requireUnauthenticated, function(req, res) {
