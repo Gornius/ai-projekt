@@ -23,7 +23,7 @@ router.get('/list', (req, res, next) => {
 });
 
 router.get('/add', (req, res, next) => {
-    res.render('notes/addOrEdit');
+    res.render('notes/addOrEdit', {viewTitle: 'Add note'});
 });
 
 router.get('/edit/:id', (req, res, next) => {
@@ -35,7 +35,7 @@ router.get('/edit/:id', (req, res, next) => {
             if (req.user.name != doc.username)
             res.render('unauthorized');
             else
-            res.render('notes/addOrEdit', {note: doc});
+            res.render('notes/addOrEdit', {note: doc, viewTitle: 'Edit note'});
         }
     });
 });
