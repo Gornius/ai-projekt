@@ -47,7 +47,7 @@ router.post('/add', (req, res, next) => {
                 console.log(err);
             }
             else {
-                res.redirect('list');
+                res.redirect('/notes/list');
             }
         });
     }
@@ -62,12 +62,33 @@ router.post('/add', (req, res, next) => {
                         console.log(err);
                     }
                     else {
-                        res.redirect('list');
+                        res.redirect('/notes/list');
                     }
                 });
             }
         });
     }
+});
+
+router.get('/delete/:id', (req, res, next) => {
+    Note.default.findById(req.params.id, (err, doc) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            if (req.user.name != doc.username)
+            res.render('unauthorized');
+            else
+            Note.default.findByIdAndRemove(doc.id, (err, doc) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.redirect('/notes/list');
+                }
+            });
+        }
+    });
 });
 
 
